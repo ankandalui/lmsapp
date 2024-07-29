@@ -8,6 +8,7 @@ import { View } from "react-native";
 import FontAwesome from "@expo/vector-icons/build/FontAwesome";
 import { Stack } from "expo-router";
 import { ToastProvider } from "react-native-toast-notifications";
+import TabsLayout from "./(tabs)/_layout";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -42,20 +43,16 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const [isLoggedIn, setisLoggedIn] = useState(false);
   return (
     <ToastProvider>
-      {isLoggedIn ? (
-        <View></View>
-      ) : (
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" />
-          <Stack.Screen name="(routes)/welcome-intro/index" />
-          <Stack.Screen name="(routes)/login/index" />
-          <Stack.Screen name="(routes)/sign-up/index" />
-          <Stack.Screen name="(routes)/forgot-password/index" />
-        </Stack>
-      )}
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="(routes)/welcome-intro/index" />
+        <Stack.Screen name="(routes)/login/index" />
+        <Stack.Screen name="(routes)/sign-up/index" />
+        <Stack.Screen name="(routes)/forgot-password/index" />
+        <Stack.Screen name="(routes)/terms/index" />
+      </Stack>
     </ToastProvider>
   );
 }

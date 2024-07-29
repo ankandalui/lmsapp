@@ -8,15 +8,19 @@ import {
 export const styles = StyleSheet.create({
   container: {
     marginTop: 12,
-    height: hp("35%"),
-    marginHorizontal: 16,
+    height: hp("36%"),
+    marginHorizontal: 20,
+    // This ensures child elements don't overflow the rounded corners
   },
 
-  slide: { flex: 1 },
+  slide: {
+    flex: 1,
+    // Ensure the slide itself is also rounded
+  },
 
   background: {
     width: "100%",
-    height: hp("27"),
+    height: hp("27%"),
     resizeMode: "stretch",
     zIndex: 1,
   },
@@ -26,6 +30,7 @@ export const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
+
     marginHorizontal: 3,
   },
 
@@ -34,6 +39,7 @@ export const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
+
     marginHorizontal: 3,
   },
 

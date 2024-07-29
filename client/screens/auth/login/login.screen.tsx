@@ -30,6 +30,11 @@ import {
 import { useState } from "react";
 import { commonStyles } from "@/styles/common/common.styles";
 import { router } from "expo-router";
+import axios from "axios";
+import { SERVER_URI } from "@/utils/uri";
+import { Toast } from "react-native-toast-notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CheckBox } from "react-native-elements";
 
 export default function LoginScreen() {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
@@ -42,6 +47,7 @@ export default function LoginScreen() {
   const [error, setError] = useState({
     password: "",
   });
+  const [isTermsChecked, setTermsChecked] = useState(false);
 
   let [fontsLoaded, fontError] = useFonts({
     Raleway_600SemiBold,
@@ -89,7 +95,29 @@ export default function LoginScreen() {
     }
   };
 
-  const handleSignIn = () => {};
+  const handleSignIn = async () => {
+    if (!isTermsChecked) {
+      Toast.show("Please agree the Terms & Conditions to proceed..", {
+        type: "danger",
+      });
+      return;
+    }
+    await axios
+      .post(`${SERVER_URI}/login`, {
+        email: userInfo.email,
+        password: userInfo.password,
+      })
+      .then(async (res) => {
+        await AsyncStorage.setItem("access_token", res.data.accessToken);
+        await AsyncStorage.setItem("refresh_token", res.data.refreshToken);
+        router.push("/(tabs)");
+      })
+      .catch((error) => {
+        Toast.show("Incorrect email or password!!", {
+          type: "danger",
+        });
+      });
+  };
 
   return (
     <LinearGradient
@@ -179,6 +207,17 @@ export default function LoginScreen() {
                 Forgot Password?
               </Text>
             </TouchableOpacity>
+            <View style={styles.checkboxContainer}>
+              <CheckBox
+                checked={isTermsChecked}
+                onPress={() => setTermsChecked(!isTermsChecked)}
+              />
+              <TouchableOpacity onPress={() => router.push("/(routes)/terms")}>
+                <Text style={styles.checkboxText}>
+                  I agree to the Terms & Conditions
+                </Text>
+              </TouchableOpacity>
+            </View>
 
             <TouchableOpacity
               style={{
@@ -302,5 +341,27 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 20,
     marginTop: 20,
+  },
+  TermsAndConditions: {
+    flexDirection: "row",
+    marginHorizontal: 16,
+    justifyContent: "center",
+    marginBottom: 20,
+    marginTop: -10,
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 2,
+  },
+  checkboxText: {
+    marginLeft: -8,
+    fontSize: 14,
+    color: "#2467EC",
+  },
+  termsText: {
+    fontSize: 14,
+    color: "#2467EC",
+    marginLeft: 5,
   },
 });

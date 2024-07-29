@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import { CheckBox } from "react-native-elements";
 import {
   AntDesign,
   Entypo,
@@ -33,7 +34,7 @@ import { commonStyles } from "@/styles/common/common.styles";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { SERVER_URI } from "@/utiils/uri";
+import { SERVER_URI } from "@/utils/uri";
 import { Toast } from "react-native-toast-notifications";
 
 export default function SignUpScreen() {
@@ -43,11 +44,14 @@ export default function SignUpScreen() {
     name: "",
     email: "",
     password: "",
+    phone: "+91",
   });
   const [required, setRequired] = useState("");
   const [error, setError] = useState({
     password: "",
+    phone: "",
   });
+  const [isTermsChecked, setTermsChecked] = useState(false);
 
   let [fontsLoaded, fontError] = useFonts({
     Raleway_600SemiBold,
@@ -96,12 +100,52 @@ export default function SignUpScreen() {
   };
 
   const handleSignIn = async () => {
+    const { name, email, password, phone } = userInfo;
+    let valid = true;
+
+    if (!name) {
+      setError((prevError) => ({ ...prevError, name: "Name is required" }));
+      valid = false;
+    }
+    if (!email) {
+      setError((prevError) => ({ ...prevError, email: "Email is required" }));
+      valid = false;
+    }
+    if (!password) {
+      setError((prevError) => ({
+        ...prevError,
+        password: "Password is required",
+      }));
+      valid = false;
+    }
+    if (!phone || phone === "+91") {
+      setError((prevError) => ({
+        ...prevError,
+        phone: "Phone number is required",
+      }));
+      valid = false;
+    }
+
+    if (!valid) {
+      Toast.show("Please fill all the required fields", {
+        type: "danger",
+      });
+      return;
+    }
+
+    if (!isTermsChecked) {
+      Toast.show("Please agree to the Terms & Conditions to proceed.", {
+        type: "danger",
+      });
+      return;
+    }
     setButtonSpinner(true);
     await axios
       .post(`${SERVER_URI}/registration`, {
         name: userInfo.name,
         email: userInfo.email,
         password: userInfo.password,
+        phone: userInfo.phone,
       })
       .then(async (res) => {
         await AsyncStorage.setItem(
@@ -115,18 +159,39 @@ export default function SignUpScreen() {
           name: "",
           email: "",
           password: "",
+          phone: "+91",
         });
         setButtonSpinner(false);
         router.push("/(routes)/verifyAccount");
       })
       .catch((error) => {
         setButtonSpinner(false);
-        Toast.show("Email aleardy exist!", {
+        Toast.show("Email already exists!", {
           type: "danger",
         });
       });
   };
 
+  const handlePhoneNumberChange = (value: string) => {
+    setUserInfo({ ...userInfo, phone: value });
+  };
+
+  const handlePhoneNumberValidation = () => {
+    const phoneNumber = userInfo.phone.replace("+91", "");
+    if (phoneNumber.length !== 10) {
+      setError({
+        ...error,
+        phone: "Phone number must be 10 digits",
+      });
+      setUserInfo({ ...userInfo, phone: "" });
+    } else {
+      setError({
+        ...error,
+        phone: "",
+      });
+      setUserInfo({ ...userInfo, phone: userInfo.phone });
+    }
+  };
   return (
     <LinearGradient
       colors={["#E5ECF9", "#F6F7F9"]}
@@ -211,49 +276,62 @@ export default function SignUpScreen() {
               />
             </View>
             {error.password && (
-              <View style={[commonStyles.errorContainer, { top: 145 }]}>
+              <View style={[commonStyles.errorContainer, { top: 125 }]}>
                 <Entypo name="cross" size={18} color={"red"} />
                 <Text style={{ color: "red", fontSize: 11, marginTop: -1 }}>
                   {error.password}
                 </Text>
               </View>
             )}
+            <View style={{ marginTop: 15 }}>
+              <TextInput
+                style={commonStyles.input}
+                keyboardType="phone-pad"
+                value={userInfo.phone}
+                placeholder="Enter your phone number..."
+                onChangeText={handlePhoneNumberChange}
+                onBlur={handlePhoneNumberValidation}
+              />
+              <SimpleLineIcons
+                style={styles.icon2}
+                name="phone"
+                size={20}
+                color={"#A1A1A1"}
+              />
+            </View>
+            {error.phone && (
+              <View style={[commonStyles.errorContainer, { top: 195 }]}>
+                <Entypo name="cross" size={18} color={"red"} />
+                <Text style={{ color: "red", fontSize: 11, marginTop: -1 }}>
+                  {error.phone}
+                </Text>
+              </View>
+            )}
+
+            <View style={styles.checkboxContainer}>
+              <CheckBox
+                checked={isTermsChecked}
+                onPress={() => setTermsChecked(!isTermsChecked)}
+              />
+              <TouchableOpacity onPress={() => router.push("/(routes)/terms")}>
+                <Text style={styles.checkboxText}>
+                  I agree to the Terms & Conditions
+                </Text>
+              </TouchableOpacity>
+            </View>
 
             <TouchableOpacity
-              style={{
-                padding: 16,
-                borderRadius: 50,
-                marginHorizontal: 50,
-                backgroundColor: "#2467EC",
-                marginTop: 15,
-              }}
+              style={styles.signupButton}
               onPress={handleSignIn}
             >
               {buttonSpinner ? (
                 <ActivityIndicator size="small" color={"white"} />
               ) : (
-                <Text
-                  style={{
-                    color: "white",
-                    textAlign: "center",
-                    fontSize: 16,
-                    fontFamily: "Raleway_700Bold",
-                  }}
-                >
-                  Sign Up
-                </Text>
+                <Text style={styles.signupButtonText}>Sign Up</Text>
               )}
             </TouchableOpacity>
 
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: 20,
-                gap: 20,
-              }}
-            >
+            <View style={styles.socialLoginContainer}>
               <TouchableOpacity>
                 <FontAwesome name="google" size={30} />
               </TouchableOpacity>
@@ -285,12 +363,13 @@ export default function SignUpScreen() {
     </LinearGradient>
   );
 }
+
 const styles = StyleSheet.create({
   signInImage: {
     width: "60%",
     height: 250,
     alignSelf: "center",
-    marginTop: 50,
+    marginTop: 4,
   },
   welcomeText: {
     textAlign: "center",
@@ -339,5 +418,40 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 20,
     marginTop: 20,
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 2,
+  },
+  checkboxText: {
+    marginLeft: -8,
+    fontSize: 14,
+    color: "#2467EC",
+  },
+  signupButton: {
+    padding: 16,
+    borderRadius: 50,
+    marginHorizontal: 50,
+    backgroundColor: "#2467EC",
+    marginTop: 15,
+  },
+  signupButtonText: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 16,
+    fontFamily: "Raleway_700Bold",
+  },
+  socialLoginContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+    gap: 20,
+  },
+  termsText: {
+    fontSize: 14,
+    color: "#2467EC",
+    marginLeft: 5,
   },
 });
