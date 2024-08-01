@@ -34,22 +34,23 @@ export default function CourseLesson({
           padding: 10,
           borderWidth: 1,
           borderColor: "#E1E2E5",
+          backgroundColor: "#FFFFFF",
           borderRadius: 8,
         }}
       >
         <View>
-          {videoSections.map((item: string, index: number) => {
-            const isSectionVisible = visibleSections.has(item);
+          {videoSections.map((section: string, sectionIndex: number) => {
+            const isSectionVisible = visibleSections.has(section);
 
             // Filter videos by section
-            const sectionVideos: any[] = courseDetails?.courseData?.filter(
-              (i: any) => i.videoSection === item
-            );
+            const sectionVideos: CourseDataType[] =
+              courseDetails?.courseData?.filter(
+                (i: CourseDataType) => i.videoSection === section
+              );
 
             return (
-              <>
+              <View key={sectionIndex}>
                 <View
-                  key={index}
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
@@ -57,20 +58,20 @@ export default function CourseLesson({
                     paddingVertical: 10,
                     borderBottomColor: "#DCDCDC",
                     borderBottomWidth:
-                      index === videoSections.length - 1 ? 0 : 1,
+                      sectionIndex === videoSections.length - 1 ? 0 : 1,
                   }}
                 >
                   <Text
                     style={{ fontSize: 18, fontFamily: "Raleway_600SemiBold" }}
                   >
-                    {item}
+                    {section}
                   </Text>
                   {isSectionVisible ? (
-                    <TouchableOpacity onPress={() => toggleSection(item)}>
+                    <TouchableOpacity onPress={() => toggleSection(section)}>
                       <Entypo name="chevron-up" size={23} color={"#6707FE"} />
                     </TouchableOpacity>
                   ) : (
-                    <TouchableOpacity onPress={() => toggleSection(item)}>
+                    <TouchableOpacity onPress={() => toggleSection(section)}>
                       <Entypo name="chevron-down" size={23} color={"#6707FE"} />
                     </TouchableOpacity>
                   )}
@@ -78,8 +79,9 @@ export default function CourseLesson({
                 {isSectionVisible && (
                   <>
                     {sectionVideos.map(
-                      (item: CourseDataType, index: number) => (
+                      (video: CourseDataType, videoIndex: number) => (
                         <View
+                          key={videoIndex}
                           style={{
                             borderWidth: 1,
                             borderColor: "#E1E2E5",
@@ -100,7 +102,7 @@ export default function CourseLesson({
                                     { fontFamily: "Nunito_500Medium" },
                                   ]}
                                 >
-                                  {item.title}
+                                  {video.title}
                                 </Text>
                               </View>
                               <View style={styles.itemDataContainer}>
@@ -111,8 +113,8 @@ export default function CourseLesson({
                                     fontFamily: "Nunito_400Regular",
                                   }}
                                 >
-                                  {item.videoLength}{" "}
-                                  {item?.videoLength > 60 ? "hour" : "minutes"}
+                                  {video.videoLength}{" "}
+                                  {video?.videoLength > 60 ? "hour" : "minutes"}
                                 </Text>
                               </View>
                             </View>
@@ -122,7 +124,7 @@ export default function CourseLesson({
                     )}
                   </>
                 )}
-              </>
+              </View>
             );
           })}
         </View>

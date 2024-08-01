@@ -1,10 +1,5 @@
-import { View, Text } from "react-native";
-import React from "react";
+import SearchInputScreen from "@/components/common/search.input.screen";
 
 export default function Search() {
-  return (
-    <View>
-      <Text>Search</Text>
-    </View>
-  );
+  return <SearchInputScreen />;
 }

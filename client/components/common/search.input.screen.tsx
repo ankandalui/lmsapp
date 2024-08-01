@@ -16,7 +16,11 @@ import { router } from "expo-router";
 import CourseCard from "../cards/course.card";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
-export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
+export default function SearchInputScreen({
+  homeScreen,
+}: {
+  homeScreen?: boolean;
+}) {
   const [value, setValue] = useState("");
   const [courses, setcourses] = useState([]);
   const [filteredCourses, setFilteredCourses] = useState([]);
@@ -143,7 +147,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-
+    marginTop: 60,
     marginHorizontal: 16,
   },
 

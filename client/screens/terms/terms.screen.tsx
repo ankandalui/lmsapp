@@ -33,13 +33,12 @@ Our App provides Users with access to compiled educational information and relat
 
 8.You may own the medium on which the information, content or materials resides, but the Company shall at all times retain full and complete title to the information, content or materials and all intellectual property rights inserted by the Company on such medium and shall be as a binding contract. Certain contents on the App may belong to third parties. Such contents have been reproduced after taking prior consent from said party and all rights relating to such content will remain with such third party. Further, you recognize and acknowledge that the ownership of all trademarks, copyright, logos, service marks and other intellectual property owned by any third party or of the Company shall continue to vest with such party and You are not permitted to use the same without the consent of the respective Company.
 
-
 ✦EDUCATOR TERMS & CONDITIONS:
 1.Once the educator enters into the agreement with the SolviT then they are bound by the rules and agreement as made between the parties. That the educational material prepared in any medium/by script or by video is and shall be made by the educator upon consent and acceptance with the terms as laid by SolviT. Once educator uploads their content to our platform, then the SolviT team has the right to use that video for any future reference. That all videos and materials curated and created are as per the remuneration paid to educator to conclusively shoot and send the videos to the SolviT. That educator shall be bound the provisions of Copyright Act,1872 and the relevant amendment provisions.
 
 2.The SolviT being the sole owner and proprietor of the contents shall have the absolute right to remove or delete videos of educators if the content is not relevant or good.
 
-3.The Educators shall be bound to share their original videos; they cannot copy content from other Apps, for example, using content from platforms like "XYZ Learning/Academy/Platform or any app."\
+3.The Educators shall be bound to share their original videos; they cannot copy content from other Apps, for example, using content from platforms like "XYZ Learning/Academy/Platform or any app."
 
 4.That the Educators cannot use any rough language/abusive language/behaviour dressing sense or engage in inappropriate behaviour with the users/ students while clearing doubts.
 
@@ -52,7 +51,7 @@ Our App provides Users with access to compiled educational information and relat
 8.In no event shall the Company, its officers, directors, employees, partners or agents be liable to You or any third party for any special, incidental, indirect, consequential or punitive damages whatsoever, including those resulting from loss of use, data or profits or any other claim arising out, of or in connection with, Your use of, or access to, the Application.
 
 ✦LEGAL CONSEQUENCES
-1.In the event of Your breach of these Terms, You agree that the Company will be irreparably harmed and may not have an adequate remedy in money or damages. The Company therefore, shall be entitled in such event to obtain an injunction against such a breach from any court of competent jurisdiction. The Company’s right to obtain such relief shall not limit its right to obtain other remedies.
+1.In the event of Your breach of these Terms, You agree that the Company will be irreparably harmed and may not have an adequate remedy in money or damages. The Company therefore, shall be entitled in such event to obtain an injunction against such a breach from any court of competent jurisdiction. The Company's right to obtain such relief shall not limit its right to obtain other remedies.
 2.Any violation by You of the terms of this Clause may result in immediate suspension or termination of Your Accounts apart from any legal remedy that the Company can avail. In such instances, the Company may also disclose Your Account Information if required by any Governmental or legal authority. You understand that the violation of these Terms could also result in civil or criminal liability under applicable laws.
 3.The Terms shall be governed by and construed in accordance with the laws of India, without regard to conflict of law principles. Further, the Terms shall be subject to the exclusive jurisdiction of the competent courts located in Kolkata and You hereby accede to and accept the jurisdiction of such courts. That the company shall hold you liable of the equitable remedies of the Copyright Act,1872, and Indian Penal Code,1860 and all other acts and amendments or other legal provisions of law to protect and safeguard our companies right.
 
@@ -67,15 +66,6 @@ The Company has the right to change modify, suspend, or discontinue and/or elimi
       colors={["#E5ECF9", "#F6F7F9"]}
       style={{ flex: 1, paddingTop: 20 }}
     >
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="arrow-back" size={24} color="#1A1A1A" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Terms & Conditions</Text>
-      </View>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.text}>
           {showMore ? termsText : `${termsText.substring(0, 1200)}...`}
@@ -83,6 +73,7 @@ The Company has the right to change modify, suspend, or discontinue and/or elimi
         <TouchableOpacity onPress={() => setShowMore(!showMore)}>
           <Text style={styles.showMore}>
             {showMore ? "Show Less" : "Show More"}
+            {showMore ? "-" : "+"}
           </Text>
         </TouchableOpacity>
       </ScrollView>
@@ -91,21 +82,6 @@ The Company has the right to change modify, suspend, or discontinue and/or elimi
 }
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10,
-  },
-  backButton: {
-    marginRight: 10,
-  },
-  headerTitle: {
-    color: "#1A1A1A",
-    fontSize: 20,
-    fontWeight: "bold",
-    flex: 1,
-    textAlign: "center",
-  },
   container: {
     padding: 20,
   },

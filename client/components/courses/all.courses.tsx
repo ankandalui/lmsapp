@@ -14,11 +14,12 @@ import {
   Nunito_600SemiBold,
   Nunito_500Medium,
 } from "@expo-google-fonts/nunito";
-import { router } from "expo-router";
+
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { SERVER_URI } from "@/utils/uri";
 import CourseCard from "@/components/cards/course.card";
+import { router } from "expo-router";
 
 export default function AllCourses() {
   const [courses, setCourses] = useState<CoursesType[]>([]);
@@ -47,7 +48,7 @@ export default function AllCourses() {
     return null;
   }
   return (
-    <View style={{ flex: 1, marginHorizontal: 16, marginTop: 30 }}>
+    <View style={{ flex: 1, marginHorizontal: 10, marginTop: 5 }}>
       <View
         style={{
           flexDirection: "row",
@@ -64,7 +65,9 @@ export default function AllCourses() {
         >
           Popular courses
         </Text>
-        <TouchableOpacity onPress={() => router.push("/(tabs)/courses")}>
+        <TouchableOpacity
+          onPress={() => router.push({ pathname: "/(tabs)/courses" as "" })}
+        >
           <Text
             style={{
               fontSize: 15,
@@ -77,6 +80,7 @@ export default function AllCourses() {
         </TouchableOpacity>
       </View>
       <FlatList
+        style={{ alignItems: "center" }}
         ref={flatListRef}
         data={courses}
         showsHorizontalScrollIndicator={false}

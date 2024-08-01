@@ -67,29 +67,17 @@ export default function CourseDetailScreen() {
       ) : (
         <LinearGradient
           colors={["#E5ECF9", "#F6F7F9"]}
-          style={{ flex: 1, paddingTop: 55 }}
+          style={{ flex: 1, paddingTop: 5 }}
         >
           <ScrollView showsVerticalScrollIndicator={false}>
             <View
               style={{
-                marginHorizontal: 16,
+                marginHorizontal: 8,
                 borderWidth: 1,
                 borderColor: "#C0C0C0",
                 borderRadius: 5,
               }}
             >
-              <TouchableOpacity
-                style={{
-                  position: "absolute",
-                  top: 1,
-                  left: -10,
-                  zIndex: 1000,
-                  padding: 10,
-                }}
-                onPress={() => router.back()}
-              >
-                <Ionicons name="arrow-back" size={24} color="black" />
-              </TouchableOpacity>
               <View
                 style={{
                   position: "absolute",
@@ -99,7 +87,7 @@ export default function CourseDetailScreen() {
                   paddingVertical: 8,
                   paddingHorizontal: 12,
                   marginTop: 8,
-                  marginLeft: 26,
+                  marginLeft: 8,
                 }}
               >
                 <Text
@@ -138,15 +126,16 @@ export default function CourseDetailScreen() {
                 </View>
               </View>
               <Image
-                source={{ uri: courseData?.thumbnail.url! }}
+                source={{ uri: courseData?.thumbnail?.url }}
                 style={{ width: "100%", height: 230, borderRadius: 6 }}
               />
             </View>
             <View
               style={{
-                marginHorizontal: 16,
-                marginVertical: 10,
+                marginHorizontal: 8,
+                marginVertical: 5,
                 borderWidth: 1,
+                backgroundColor: "#FFFFFF",
                 borderColor: "#C0C0C0",
                 borderRadius: 5,
               }}
@@ -326,6 +315,9 @@ export default function CourseDetailScreen() {
                     color: "#525258",
                     fontSize: 16,
                     marginTop: 10,
+                    padding: 10,
+                    backgroundColor: "#FFFFFF",
+                    borderRadius: 8,
                     textAlign: "justify",
                     fontFamily: "Nunito_500Medium",
                   }}

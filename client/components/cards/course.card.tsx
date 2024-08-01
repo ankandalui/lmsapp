@@ -17,7 +17,7 @@ export default function CourseCard({ item }: { item: CoursesType }) {
         })
       }
     >
-      <View style={{ paddingHorizontal: 10 }}>
+      <View style={{ paddingHorizontal: 2 }}>
         <Image
           style={{
             width: wp(86),
@@ -26,7 +26,7 @@ export default function CourseCard({ item }: { item: CoursesType }) {
             alignSelf: "center",
             objectFit: "cover",
           }}
-          source={{ uri: item.thumbnail?.url }}
+          source={{ uri: item?.thumbnail?.url }}
         />
         <View style={{ width: wp(85) }}>
           <Text
